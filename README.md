@@ -58,11 +58,6 @@ NODE_ENV=development
 FRONTEND_URL=http://localhost:3000
 ```
 
-**Generate JWT Secret:**
-```bash
-node -e "console.log(require('crypto').randomBytes(64).toString('hex'))"
-```
-
 Start backend server:
 ```bash
 npm start
@@ -81,22 +76,6 @@ Start frontend:
 npm start
 ```
 App runs on: `http://localhost:3000`
-
-## API Endpoints
-
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/verify` - Verify JWT token
-
-### Blogs
-- `GET /api/blogs` - Get all blogs (paginated)
-- `GET /api/blogs/:id` - Get single blog
-- `POST /api/blogs` - Create new blog (authenticated)
-- `PUT /api/blogs/:id` - Update blog (author only)
-- `DELETE /api/blogs/:id` - Delete blog (author only)
-
-## Key Features Explained
 
 ### Custom useApi Hook
 Handles all API requests with:
@@ -149,12 +128,6 @@ Handles all API requests with:
 ## License
 
 This project is open source and available under the MIT License.
-
-## Author
-
-Your Name
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
 
 ## Acknowledgments
 
