@@ -38,7 +38,7 @@ const useApi = () => {
       setError(error.message);
       throw error;
     }
-  }, []); // ✅ REMOVE setLoading and setError from dependencies
+  }, [setLoading, setError]);
 
   const get = useCallback((endpoint) => request(endpoint, { method: 'GET' }), [request]);
   const post = useCallback((endpoint, body) => request(endpoint, {

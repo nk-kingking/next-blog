@@ -21,31 +21,32 @@ const App = () => {
   const { setUser, logout } = useStore();
   const api = useApi();
 
+  const verifyToken = useCallback(async () => {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      try {
+        const data = await api.get('/auth/verify');
+        setUser(data.user);
+        setIsAuthenticated(true);
+      } catch (err) {
+        console.error('Token verification failed:', err);
+        localStorage.removeItem('token');
+        setIsAuthenticated(false);
+      }
+    } else {
+      setIsAuthenticated(false);
+    }
+
+    setIsVerifying(false);
+  }, [api, setUser]);
+
   useEffect(() => {
     if (hasVerified.current) return;
     hasVerified.current = true;
 
-    const verifyToken = async () => {
-      const token = localStorage.getItem('token');
-      
-      if (token) {
-        try {
-          const data = await api.get('/auth/verify');
-          setUser(data.user);
-          setIsAuthenticated(true);
-        } catch (err) {
-          console.error('Token verification failed:', err);
-          localStorage.removeItem('token');
-          setIsAuthenticated(false);
-        }
-      } else {
-        setIsAuthenticated(false);
-      }
-      setIsVerifying(false);
-    };
-    
     verifyToken();
-  }, []);
+  }, [verifyToken]);
 
   const handleLogout = useCallback(() => {
     localStorage.removeItem('token');

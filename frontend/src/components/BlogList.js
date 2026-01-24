@@ -29,7 +29,7 @@ const BlogList = forwardRef(({ onEdit, onView }, ref) => {
   // Fetch blogs only when currentPage changes
   useEffect(() => {
     fetchBlogs(currentPage);
-  }, [currentPage]);
+  }, [currentPage, fetchBlogs]);
 
   // Expose refresh method to parent
   useImperativeHandle(ref, () => ({
