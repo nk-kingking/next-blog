@@ -1,5 +1,6 @@
 const express = require('express');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 require('dotenv').config();
 
 const connectDB = require('./config/database');
@@ -10,14 +11,17 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    'http://localhost:3000',
-    'https://next-blog-nhq1.vercel.app/'
+    'https://next-blog-nhq1.vercel.app',
+    'http://localhost:3000'
   ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
   optionsSuccessStatus: 200
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -39,7 +43,8 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).json({
     success: false,
-    message: 'Something went wrong!'
+    message: 'Something went wrong!',
+    error: process.env.NODE_ENV === 'development' ? err.message : undefined
   });
 });
 

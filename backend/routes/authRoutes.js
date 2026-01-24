@@ -6,6 +6,16 @@ const authenticateToken = require('../middleware/auth');
 
 const router = express.Router();
 
+// Helper function to set cookie
+const setTokenCookie = (res, token) => {
+  res.cookie('token', token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+    maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+  });
+};
+
 router.post('/register', async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -48,6 +58,9 @@ router.post('/register', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    // SET COOKIE
+    setTokenCookie(res, token);
+
     res.status(201).json({
       success: true,
       message: 'User registered successfully',
@@ -60,6 +73,7 @@ router.post('/register', async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Registration error:', error);
     res.status(500).json({
       success: false,
       message: 'Server error during registration',
@@ -106,6 +120,9 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    // SET COOKIE
+    setTokenCookie(res, token);
+
     console.log('Login successful for email:', email);
     res.json({
       success: true,
@@ -122,9 +139,23 @@ router.post('/login', async (req, res) => {
     console.error('Login error:', error);
     res.status(500).json({
       success: false,
-      message: 'Server error during login'
+      message: 'Server error during login',
+      error: process.env.NODE_ENV === 'development' ? error.message : undefined
     });
   }
+});
+
+// LOGOUT ROUTE (NEW)
+router.post('/logout', (req, res) => {
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  });
+  res.json({
+    success: true,
+    message: 'Logged out successfully'
+  });
 });
 
 router.get('/verify', authenticateToken, async (req, res) => {
@@ -139,6 +170,7 @@ router.get('/verify', authenticateToken, async (req, res) => {
       },
     });
   } catch (error) {
+    console.error('Verification error:', error);
     res.status(500).json({ 
       success: false,
       message: 'Server error during verification' 
