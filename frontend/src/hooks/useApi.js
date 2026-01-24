@@ -21,6 +21,7 @@ const useApi = () => {
       const response = await fetch(`${API_BASE}/api${endpoint}`, {
         ...options,
         headers,
+        credentials: 'include',
       });
 
       const data = await response.json();

@@ -10,8 +10,7 @@ const userSchema = new mongoose.Schema({
     match: [/^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email']
   },
   display_name: {
-    type: String,
-    default: function() { return this.email.split('@')[0]; }
+    type: String
   },
   password: {
     type: String,
@@ -26,11 +25,10 @@ const userSchema = new mongoose.Schema({
 
 
 
-userSchema.pre('save', function(next) {
-  if (this.display_name === this.email) {
+userSchema.pre('save', function() {
+  if (!this.display_name) {
     this.display_name = this.email.split('@')[0];
   }
-  next();
 });
 
 userSchema.methods.toJSON = function() {
