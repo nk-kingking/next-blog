@@ -9,8 +9,11 @@ const blogRoutes = require('./routes/blogRoutes');
 const app = express();
 
 const corsOptions = {
-  origin: [process.env.FRONTEND_URL || 'http://localhost:3000', 'http://localhost:3000'],
-  credentials: true,
+  origin: [
+    process.env.FRONTEND_URL || 'http://localhost:3000',
+    'http://localhost:3000',
+    'https://next-blog-nhq1.vercel.app/'
+  ],
   optionsSuccessStatus: 200
 };
 
