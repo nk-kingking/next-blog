@@ -70,28 +70,33 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   try {
+    console.log('Login attempt:', { email: req.body.email, ip: req.ip });
+
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({ 
+      console.log('Login failed: Missing email or password');
+      return res.status(400).json({
         success: false,
-        message: 'Please provide email and password' 
+        message: 'Please provide email and password'
       });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ 
+      console.log('Login failed: User not found for email:', email);
+      return res.status(401).json({
         success: false,
-        message: 'Invalid email or password' 
+        message: 'Invalid email or password'
       });
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      return res.status(401).json({ 
+      console.log('Login failed: Invalid password for email:', email);
+      return res.status(401).json({
         success: false,
-        message: 'Invalid email or password' 
+        message: 'Invalid email or password'
       });
     }
 
@@ -101,6 +106,7 @@ router.post('/login', async (req, res) => {
       { expiresIn: '7d' }
     );
 
+    console.log('Login successful for email:', email);
     res.json({
       success: true,
       message: 'Login successful',
@@ -113,9 +119,10 @@ router.post('/login', async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({ 
+    console.error('Login error:', error);
+    res.status(500).json({
       success: false,
-      message: 'Server error during login' 
+      message: 'Server error during login'
     });
   }
 });
