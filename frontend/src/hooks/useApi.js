@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import useStore from '../store/useStore';
 
-const API_BASE = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_BASE = process.env.REACT_APP_API_URL || 'https://next-blog-88ch.onrender.com';
 
 const useApi = () => {
   const { setLoading, setError } = useStore();
@@ -18,7 +18,7 @@ const useApi = () => {
         ...options.headers,
       };
 
-      const response = await fetch(`${API_BASE}${endpoint}`, {
+      const response = await fetch(`${API_BASE}/api${endpoint}`, {
         ...options,
         headers,
       });
