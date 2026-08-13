@@ -11,8 +11,9 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    'https://next-blog-nhq1.vercel.app',
-    'http://localhost:3000'
+    'https://next-blog-bcm4.onrender.com',
+    'http://localhost:3000',
+    'http://localhost:5173'
   ],
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
@@ -21,7 +22,7 @@ const corsOptions = {
 };
 
 app.use(cors(corsOptions));
-app.options('*', cors(corsOptions));
+
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
