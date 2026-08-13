@@ -11,7 +11,7 @@ const app = express();
 
 const corsOptions = {
   origin: [
-    'https://next-blog-nhq1.vercel.app',
+    'https://next-blog-bcm4.onrender.com',
     'http://localhost:3000'
   ],
   credentials: true,
