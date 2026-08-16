@@ -12,6 +12,7 @@ const app = express();
 const corsOptions = {
   origin: [
     'https://next-blog-bcm4.onrender.com',
+    'https://next-blog-rcwy.onrender.com',
     'http://localhost:3000',
     'http://localhost:5173'
   ],
